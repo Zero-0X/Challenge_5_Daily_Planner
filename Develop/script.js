@@ -1,17 +1,17 @@
 $(function () {
-  // Listener for click events on the save button
+  // Save Button listener
   $(".saveBtn").on("click", function () {
-    // Get the user input from the textarea
+    // User Input text
     var userInput = $(this).siblings(".description").val();
 
     // Get the id of the containing time-block
     var timeBlockId = $(this).parent().attr("id");
 
-    // Save the user input in local storage using the time-block id as the key
+    // Save the user input to local storage
     localStorage.setItem(timeBlockId, userInput);
   });
 
-  // Apply the past, present, or future class to each time block
+  // Apply the appropriate class to each time block
   function applyTimeBlockClass() {
     // Get the current hour using Day.js library
     var currentHour = dayjs().hour();
@@ -23,7 +23,7 @@ $(function () {
       // Remove all time-related classes
       $(this).removeClass("past present future");
 
-      // Add the appropriate class based on the comparison with the current hour
+      // Change the class, which will change the color, to reflect the current hour
       if (timeBlockHour < currentHour) {
         $(this).addClass("past");
       } else if (timeBlockHour === currentHour) {
@@ -34,7 +34,7 @@ $(function () {
     });
   }
 
-  // Get user input from localStorage and set textarea values
+  // Retrieve saved user data from localStorage
   function setSavedUserInput() {
     $(".time-block").each(function () {
       var timeBlockId = $(this).attr("id");
@@ -45,13 +45,18 @@ $(function () {
     });
   }
 
+  // Display current time in 24HR format
+  function updateCurrentTime() {
+    var currentTime = dayjs().format("HH:mm:ss");
+    currentDayElement.textContent = "Current Time: " + currentTime;
+  }
+
   // Display the current date in the header
   function displayCurrentDate() {
-    var currentDate = dayjs().format("dddd, MMMM D, YYYY");
+    var currentDate = dayjs().format("dddd, MMMM D, YYYY, HH:mm:ss");
     $("#currentDay").text(currentDate);
   }
 
-  // Call the necessary functions
   applyTimeBlockClass();
   setSavedUserInput();
   displayCurrentDate();
